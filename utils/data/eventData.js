@@ -19,6 +19,17 @@ const createEvent = (payload) => new Promise((resolve, reject) => {
     .then((data) => resolve(data))
     .catch(reject);
 });
+const updateEvent = (payload) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${payload.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(resolve)
+    .catch(reject);
+});
 
 // eslint-disable-next-line import/prefer-default-export
-export { getEvents, createEvent };
+export { getEvents, createEvent, updateEvent };
