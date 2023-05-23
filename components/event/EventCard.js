@@ -21,11 +21,12 @@ const EventCard = ({
   </Card>
 );
 
-GameCard.propTypes = {
-   game: PropTypes.object.isRequired,
-  maker: PropTypes.string.isRequired,
-  date: PropTypes.date.isRequired,
-  time: PropTypes.time.isRequired,
+EventCard.propTypes = {
+  game: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  organizer: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
 };
 
 export default EventCard;
