@@ -11,9 +11,9 @@ const EventCard = ({
 
 }) => (
   <Card className="text-center">
-    <Card.Header>{game.title}</Card.Header>
     <Card.Body>
       <Card.Title>By: {organizer.bio}</Card.Title>
+      <Card.Text>{game}</Card.Text>
       <Card.Text>{description}</Card.Text>
       <Card.Text>{date}</Card.Text>
       <Card.Text>{time}</Card.Text>

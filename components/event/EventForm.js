@@ -83,8 +83,8 @@ const EventForm = ({ user }) => {
           <Form.Control
             type="text"
             style={{ height: '100px' }}
-            name="numberOfPlayers"
-            value={currentEvent.numberOfPlayers}
+            name="description"
+            value={currentEvent.description}
             onChange={handleChange}
             required
           />
