@@ -17,6 +17,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
     'no-alert': 'off',
+    'react/jsx-indent': 'off',
     'react/jsx-filename-extension': [
       1,
       {

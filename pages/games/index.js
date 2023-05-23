@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 import GameCard from '../../components/game/GameCard';
 import { getGames } from '../../utils/data/gameData';
-import { useRouter } from 'next/router';
 
 function Home() {
   const [games, setGames] = useState([]);
@@ -20,14 +20,15 @@ function Home() {
           <GameCard title={game.title} maker={game.maker} numberOfPlayers={game.number_of_players} skillLevel={game.skill_level} />
         </section>
       ))}
-    </article>
+       </article>
     <Button
-    onClick={() => {
+      onClick={() => {
         router.push('/games/new');
-    }}
+      }}
     >
     Register New Game
-    </Button></>
+    </Button>
+    </>
   );
 }
 
