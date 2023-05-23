@@ -7,5 +7,18 @@ const getEvents = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const createEvent = (payload) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
 // eslint-disable-next-line import/prefer-default-export
-export { getEvents };
+export { getEvents, createEvent };
