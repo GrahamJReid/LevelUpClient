@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { getGames } from '../../utils/data/gameData';
-import { createEvent } from '../../utils/data/eventData';
+import { createEvent, updateEvent } from '../../utils/data/eventData';
+import { useAuth } from '../../utils/context/authContext';
 
 const initialState = {
   game: '',
@@ -12,8 +13,7 @@ const initialState = {
   time: '',
   organizer: '',
 };
-
-const EventForm = ({ user }) => {
+const EventForm = ({ obj }) => {
   /*
   Since the input fields are bound to the values of
   the properties of this state variable, you need to
@@ -22,6 +22,21 @@ const EventForm = ({ user }) => {
   const [currentEvent, setcurrentEvent] = useState(initialState);
   const router = useRouter();
   const [games, setGames] = useState([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (obj.id) {
+      setcurrentEvent({
+        id: obj.id,
+        game: obj.game.id,
+        description: obj.description,
+        date: obj.date,
+        time: obj.time,
+        organizer: obj.organizer,
+        userId: user.uid,
+      });
+    }
+  }, [obj, user]);
 
   useEffect(() => {
     getGames().then(setGames);
@@ -39,24 +54,34 @@ const EventForm = ({ user }) => {
   const handleSubmit = (e) => {
     // Prevent form from being submitted
     e.preventDefault();
+    if (obj.id) {
+      const eventUpdate = {
+        id: obj.id,
+        game: currentEvent.game,
+        description: currentEvent.description,
+        date: currentEvent.date,
+        time: currentEvent.time,
+        userId: user.uid,
+      };
+      updateEvent(eventUpdate)
+        .then(() => router.push('/events'));
+    } else {
+      const event = {
+        game: currentEvent.game,
+        description: currentEvent.description,
+        date: currentEvent.date,
+        time: currentEvent.time,
+        userId: user.uid,
+      };
 
-    const today = new Date();
-    const daytoday = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-    const timenow = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
-    const event = {
-      game: currentEvent.game,
-      description: currentEvent.description,
-      date: daytoday,
-      time: timenow,
-      userId: user.uid,
-    };
-
-    // Send POST request to your API
-    createEvent(event).then(() => router.push('/events'));
+      // Send POST request to your API
+      createEvent(event).then(() => router.push('/events'));
+    }
   };
 
   return (
     <>
+
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
 
@@ -88,6 +113,24 @@ const EventForm = ({ user }) => {
             onChange={handleChange}
             required
           />
+          <Form.Label>Date</Form.Label>
+          <Form.Control
+            type="date"
+            name="date"
+            value={currentEvent.date}
+            onChange={handleChange}
+            required
+          />
+          <Form.Label>Time</Form.Label>
+          <Form.Control
+            type="time"
+            min="00:00"
+            max="23:59"
+            name="time"
+            value={currentEvent.time}
+            onChange={handleChange}
+            required
+          />
 
         </Form.Group>
         {/* TODO: create the rest of the input fields */}
@@ -101,10 +144,20 @@ const EventForm = ({ user }) => {
 };
 
 EventForm.propTypes = {
-  user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-    displayName: PropTypes.string.isRequired,
-  }).isRequired,
+  obj: PropTypes.shape({
+    id: PropTypes.number,
+    // eslint-disable-next-line react/forbid-prop-types
+    game: PropTypes.object,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    time: PropTypes.string,
+    // eslint-disable-next-line react/forbid-prop-types
+    organizer: PropTypes.object,
+  }),
+};
+
+EventForm.defaultProps = {
+  obj: initialState,
 };
 
 export default EventForm;
