@@ -13,9 +13,6 @@ const initialState = {
   time: '',
   organizer: '',
 };
-const today = new Date();
-const daytoday = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-const timenow = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
 const EventForm = ({ obj }) => {
   /*
   Since the input fields are bound to the values of
@@ -62,8 +59,8 @@ const EventForm = ({ obj }) => {
         id: obj.id,
         game: currentEvent.game,
         description: currentEvent.description,
-        date: daytoday,
-        time: timenow,
+        date: currentEvent.date,
+        time: currentEvent.time,
         userId: user.uid,
       };
       updateEvent(eventUpdate)
@@ -72,8 +69,8 @@ const EventForm = ({ obj }) => {
       const event = {
         game: currentEvent.game,
         description: currentEvent.description,
-        date: daytoday,
-        time: timenow,
+        date: currentEvent.date,
+        time: currentEvent.time,
         userId: user.uid,
       };
 
@@ -84,6 +81,7 @@ const EventForm = ({ obj }) => {
 
   return (
     <>
+
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
 
@@ -112,6 +110,24 @@ const EventForm = ({ obj }) => {
             style={{ height: '100px' }}
             name="description"
             value={currentEvent.description}
+            onChange={handleChange}
+            required
+          />
+          <Form.Label>Date</Form.Label>
+          <Form.Control
+            type="date"
+            name="date"
+            value={currentEvent.date}
+            onChange={handleChange}
+            required
+          />
+          <Form.Label>Time</Form.Label>
+          <Form.Control
+            type="time"
+            min="00:00"
+            max="23:59"
+            name="time"
+            value={currentEvent.time}
             onChange={handleChange}
             required
           />
