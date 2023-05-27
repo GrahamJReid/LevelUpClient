@@ -124,8 +124,6 @@ const EventForm = ({ obj }) => {
           <Form.Label>Time</Form.Label>
           <Form.Control
             type="time"
-            min="00:00"
-            max="23:59"
             name="time"
             value={currentEvent.time}
             onChange={handleChange}
