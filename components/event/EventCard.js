@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Card, Button } from 'react-bootstrap';
-import { deleteEvent } from '../../utils/data/eventData';
+import { deleteEvent, joinEvent, leaveEvent } from '../../utils/data/eventData';
+import { useAuth } from '../../utils/context/authContext';
 
 const EventCard = ({
   id,
@@ -12,14 +13,18 @@ const EventCard = ({
   time,
   organizer,
   onUpdate,
+  joined,
 
 }) => {
   const router = useRouter();
+  const { user } = useAuth();
   const deletethisEvent = () => {
     if (window.confirm('Delete your Event?')) {
       deleteEvent(id).then(() => onUpdate());
     }
   };
+  const leave = () => leaveEvent(id, user.uid).then(() => onUpdate());
+  const join = () => joinEvent(id, user.uid).then(() => onUpdate());
   return (
   <Card className="text-center">
     <Card.Body>
@@ -41,6 +46,11 @@ const EventCard = ({
     >
        Delete
     </Button>
+    {
+        joined
+          ? <Button className="btn-danger" onClick={leave}>Leave</Button>
+          : <Button className="btn-success" onClick={join}>Join</Button>
+      }
   </Card>
 
   );
@@ -54,6 +64,7 @@ EventCard.propTypes = {
   date: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  joined: PropTypes.bool.isRequired,
 };
 
 export default EventCard;

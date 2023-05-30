@@ -49,7 +49,6 @@ const GameForm = ({ obj }) => {
       [name]: value,
     }));
   };
-  console.warn(currentGame);
   const handleSubmit = (e) => {
     // Prevent form from being submitted
     e.preventDefault();
